@@ -1,0 +1,163 @@
+# This workflow checks out code, performs a Codacy security scan
+# and integrates the results with the
+# GitHub Advanced Security code scanning feature.  For more information on
+# the Codacy security scan action usage and parameters, see
+# https://github.com/codacy/codacy-analysis-cli-action.
+# For more information on Codacy Analysis CLI in general, see
+# https://github.com/codacy/codacy-analysis-cli.
+
+name: Codacy Security Scan
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ master ]
+  schedule:
+    - cron: '34 19 * * 1'
+    
+    - name: Cache
+  uses: actions/cache@v2.1.6
+  with:
+    # A list of files, directories, and wildcard patterns to cache and restore
+    path: 
+    # An explicit key for restoring and saving the cache
+    key: 
+    # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+    restore-keys: # optional
+    # The chunk size used to split up large files during upload, in bytes
+    upload-chunk-size: # optional
+    
+    - name: Download a Build Artifact
+  uses: actions/download-artifact@v2.0.7
+  with:
+    # Artifact name
+    name: # optional
+    # Destination path
+    path: # optional
+    
+    - name: Discord Activity Badge
+  # You may pin to the exact commit or the version.
+  # uses: CodexLink/discord-activity-badge@4d0ee1e184109fd1ee294bfecc6fc4cd4d55782e
+  uses: CodexLink/discord-activity-badge@v1.0
+  with:
+    # The name of the badge (in markdown form) that will be utilized to replace the state of the user. If the identifier does not exists, then it will proceed to create a new one and append it on the top. You must arranged it right after.
+    BADGE_IDENTIFIER_NAME: # optional
+    # The commit message that the user wants to invoke whenever there's changes.
+    COMMIT_MESSAGE: # optional
+    # The token of your bot from the Discord's Developer Page. It was used to allow usage of Discord API.
+    DISCORD_BOT_TOKEN: 
+    # A long integer ID used to indicate who you are in a certain mutual guild.
+    DISCORD_USER_ID: 
+    # The repository from where the commits will be pushed. Fill this when you are indirectly deploying the script under different repository.
+    PROFILE_REPOSITORY: # optional, default is ${{ github.repository }}
+    # The URL to point when the badge has been clicked.
+    URL_TO_REDIRECT_ON_CLICK: # optional, default is ${{ github.repository }}
+    # The token of the Github Workflow Instance used to authenticate commits deployed by the script. Fill this when you are indirectly deploying the script under different repository.
+    WORKFLOW_TOKEN: # optional, default is ${{ github.token }}
+    # Overrides `Discord Activity` (Subject String) and User State with the state of `CustomActivity` with custom strings.
+    CUSTOM_ACTIVITY_STRING: # optional
+    # Overrides `Discord Activity` (Subject String) and User State with the state of `Game` with custom strings.
+    GAME_ACTIVITY_STRING: # optional
+    # Overrides `Discord Activity` (Subject String) and User State with the state of `Activity` with custom strings.
+    RICH_PRESENCE_STRING: # optional
+    # Overrides `Discord Activity` (Subject String) and User State with the state of `Stream` with custom strings.
+    STREAM_ACTIVITY_STRING: # optional
+    # Overrides `Discord Activity` (Subject String) and User State with the state of `Unspecified` with custom strings.
+    SPOTIFY_ACTIVITY_STRING: # optional
+    # Overrides the status output in Online state.
+    ONLINE_STATUS_STRING: # optional
+    # Overrides the status output in Idle state.
+    IDLE_STATUS_STRING: # optional
+    # Overrides the status output in Do-Not-Disturb (DND) state.
+    DND_STATUS_STRING: # optional
+    # Overrides the status output in Offline state.
+    OFFLINE_STATUS_STRING: # optional
+    # Renders status badge color whenever there's a Custom activity. Please check README.md for more information about this parameter.
+    CUSTOM_ACTIVITY_COLOR: # optional
+    # Renders status badge color whenever there's a Game activity. Please check README.md for more information about this parameter.
+    GAME_ACTIVITY_COLOR: # optional
+    # Renders status badge color whenever there's a Rich Presence. Please check README.md for more information about this parameter.
+    RICH_PRESENCE_COLOR: # optional
+    # Renders status badge color whenever there's a Stream activity. Please check README.md for more information about this parameter.
+    STREAM_ACTIVITY_COLOR: # optional
+    # Renders status badge color whenever there's a Unspecified activity. Please check README.md for more information about this parameter.
+    SPOTIFY_ACTIVITY_COLOR: # optional
+    # Overrides the status color when the user is in Online state.
+    ONLINE_STATUS_COLOR: # optional
+    # Overrides the status color when the user is in Idle state.
+    IDLE_STATUS_COLOR: # optional
+    # Overrides the status color when the user is in Do-Not-Disturb (DND) state.
+    DND_STATUS_COLOR: # optional
+    # Overrides the status color when the user is in Offline state.
+    OFFLINE_STATUS_COLOR: # optional
+    # Statically declare a certain string to display on the subject. If declared, []_ACTIVITY_STRING and []_STATUS_STRING will be ignored.
+    STATIC_SUBJECT_STRING: # optional
+    # Overrides additional information to append in the badge. So far, only `DETAILS`, and `STATE` are allowed to be appended since it shows the other context of the application.
+    PREFERRED_PRESENCE_CONTEXT: # optional
+    # Appends time (based on preference) after the application name or detail when `APPEND_PRESENCE_CONTEXT` is `True`.
+    TIME_DISPLAY_OUTPUT: # optional
+    # Overrides the string appended whenever the time is displayed for elapsed. This is effective only when `SHOW_TIME_DURATION` is `True`.
+    TIME_DISPLAY_ELAPSED_OVERRIDE_STRING: # optional
+    # Overrides the string appended whenever the time is displayed for remaining. This is effective only when `SHOW_TIME_DURATION` is `True`.
+    TIME_DISPLAY_REMAINING_OVERRIDE_STRING: # optional
+    # Displays the time with hours and minutes shorthanded to h and m.
+    TIME_DISPLAY_SHORTHAND: # optional
+    # Renders a particular activity as a prioritized activity. If the preferred activity does not exist, it will render any activity by default.
+    PREFERRED_ACTIVITY_TO_DISPLAY: # optional
+    # Interchange state and activity colors. This is useful only if you want to retain your state color position even though `APPEND_STATE_ON_SUBJECT` is true.
+    SHIFT_STATUS_ACTIVITY_COLORS: # optional
+    # Interchange state and activity colors. This is useful only if you want to retain your state color position even though `APPEND_STATE_ON_SUBJECT` is true.
+    SPOTIFY_INCLUDE_ALBUM_PLAYLIST_NAME: # optional
+    # The character/s that seperates the context of every status elements.
+    STATUS_CONTEXT_SEPERATOR: # optional
+    # Runs the usual process except it doesn't commit changes.
+    IS_DRY_RUN: # optional
+    
+    - name: StackPulse Apply Playbook
+  # You may pin to the exact commit or the version.
+  # uses: torqio/stackpulse-apply-playbook@da452c8d43c4f96632d603e62a080fe99c84ded1
+  uses: torqio/stackpulse-apply-playbook@v0.2
+  with:
+    # Your StackPulse API Client ID
+    clientId: # optional
+    # Your StackPulse API Client Secret
+    clientSecret: # optional
+    # Path to the yaml file of the playbook or trigger to apply
+    yamlFile: 
+    # Type of yaml resource to apply, 'playbook' or 'trigger' (default is 'playbook')
+    yamlType: # default is playbook
+    
+    
+
+jobs:
+  codacy-security-scan:
+    name: Codacy Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@1.1.0
+        with:
+          # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
+          # You can also omit the token and run the tools that support default configurations
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          verbose: true
+          output: results.sarif
+          format: sarif
+          # Adjust severity of non-security issues
+          gh-code-scanning-compat: true
+          # Force 0 exit code to allow SARIF file generation
+          # This will handover control about PR rejection to the GitHub side
+          max-allowed-issues: 2147483647
+
+      # Upload the SARIF file generated in the previous step
+      - name: Upload SARIF results file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif
